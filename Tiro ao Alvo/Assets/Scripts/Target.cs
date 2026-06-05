@@ -24,7 +24,7 @@ public class Target : MonoBehaviour
     void Start()
     {
         startPosition = transform.position;
-        playerShooter = FindObjectOfType<FPSAimController>();
+        playerShooter = FindAnyObjectByType<FPSAimController>();
     }
 
     // Update is called once per frame
@@ -37,7 +37,7 @@ public class Target : MonoBehaviour
             newPos.x += directionX * moveSpeed * Time.deltaTime;
             if(Mathf.Abs(newPos.y - startPosition.y) >= moveRange)
             {
-                directionY *= .1;
+                directionY *= .1f;
             }
         }
 
