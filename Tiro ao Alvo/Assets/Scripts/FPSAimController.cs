@@ -139,7 +139,7 @@ public class FPSAimController : MonoBehaviour
         }
     }
 
-    void HandleMovement()
+   void HandleMovement()
     {
         float x = 0f;
         float z = 0f;
@@ -152,10 +152,16 @@ public class FPSAimController : MonoBehaviour
         Vector3 inputDir = new Vector3(x, 0f, z).normalized;
         Vector3 move = transform.right * inputDir.x + transform.forward * inputDir.z;
 
-        // Movimentação fluida e sem tremedeira pela física!
         if (rb != null)
         {
-            rb.MovePosition(rb.position + move * moveSpeed * Time.fixedDeltaTime);
+            // Calculamos a velocidade desejada nas direções X e Z
+            Vector3 targetVelocity = move * moveSpeed;
+            
+            // O Segredo: Preservamos a velocidade atual do eixo Y (a gravidade agindo)
+            targetVelocity.y = rb.linearVelocity.y;
+            
+            // Aplicamos a velocidade final ao corpo do jogador
+            rb.linearVelocity = targetVelocity;
         }
     }
     
