@@ -25,17 +25,49 @@ public class Target : MonoBehaviour
     {
         Vector3 newPos = transform.position;
 
+        // Movimento Horizontal (Eixo X)
         if (moveHorizontal)
         {
             newPos.x += directionX * moveSpeed * Time.deltaTime;
-            // Verifica o eixo X no movimento horizontal
-            if(Mathf.Abs(newPos.x - startPosition.x) >= moveRange)
+            
+            float offsetX = newPos.x - startPosition.x;
+
+            // Se chegou no limite, inverte para voltar
+            if (offsetX >= moveRange)
             {
-                directionX *= -1f; // Inverte a direção
+                newPos.x = startPosition.x + moveRange; // Trava no limite exato
+                directionX = -1f;
+            }
+            // Se voltou para o ponto de criação original, inverte para ir para frente
+            else if (offsetX <= 0f)
+            {
+                newPos.x = startPosition.x; // Trava no zero exato
+                directionX = 1f;
+            }
+        }
+
+        // Movimento Vertical (Eixo Y) - Agora implementado!
+        if (moveVertical)
+        {
+            newPos.y += directionY * moveSpeed * Time.deltaTime;
+            
+            float offsetY = newPos.y - startPosition.y;
+
+            if (offsetY >= moveRange)
+            {
+                newPos.y = startPosition.y + moveRange;
+                directionY = -1f;
+            }
+            else if (offsetY <= 0f)
+            {
+                newPos.y = startPosition.y;
+                directionY = 1f;
             }
         }
 
         transform.position = newPos;
+        
+        // Continua girando o alvo para ficar dinâmico
         transform.Rotate(Vector3.up, 180 * Time.deltaTime);
     }
 
